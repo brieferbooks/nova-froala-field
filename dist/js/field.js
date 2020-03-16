@@ -1416,8 +1416,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MediaConfigurator__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PluginsLoader__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_froala_editor__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_froala_editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_froala_editor__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__plugins_speak__ = __webpack_require__(60);
 //
 //
 //
@@ -1439,70 +1438,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// This is a custom plugin
 
-
-// Add the custom speak button
-(function (FroalaEditor) {
-
-    if (!Nova.config.voiceSynthesizeUri) return;
-
-    var audioLoading = false;
-    var audioPlaying = false;
-    var audio = null;
-
-    FroalaEditor.DefineIcon('speakIcon', { NAME: 'Listen', template: 'text' });
-    FroalaEditor.RegisterCommand('speak', {
-        title: 'Listen To Selected',
-        icon: 'speakIcon',
-        focus: true,
-        showOnMobile: true,
-        refreshAfterCallback: true,
-
-        callback: function callback() {
-            var voiceSynthesizeUri = Nova.config.voiceSynthesizeUri;
-            var $btn = this.$tb.find('[data-cmd="speak"]');
-            var $btnText = $btn.find('span').first();
-
-            if (audioLoading) return;
-
-            if (audioPlaying) {
-                // If there is audio playing, just stop playing it
-                audio.pause();
-                $btnText.text('Listen');
-
-                audioPlaying = false;
-                audioLoading = false;
-                return;
-            }
-
-            // Make a selection
-            if (this.selection.text().trim() == '') {
-                this.commands.selectAll();
-            }
-
-            $btnText.text('Loading...');
-            $btn.addClass('fr-disabled');
-            audio = new Audio(voiceSynthesizeUri + '?text=' + encodeURIComponent(this.selection.text().trim()));
-            audioLoading = true;
-            audio.play();
-
-            audio.addEventListener('playing', function () {
-                audioPlaying = true;
-                audioLoading = false;
-                $btn.removeClass('fr-disabled');
-                $btnText.text('Stop');
-            }.bind(this));
-
-            audio.addEventListener('ended', function () {
-                audioPlaying = false;
-                $btn.removeClass('fr-disabled');
-                $btnText.text('Listen');
-            }.bind(this));
-        },
-
-        refresh: function refresh() {}
-    });
-})(__WEBPACK_IMPORTED_MODULE_3_froala_editor___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [__WEBPACK_IMPORTED_MODULE_0_laravel_nova__["HandlesValidationErrors"], __WEBPACK_IMPORTED_MODULE_0_laravel_nova__["FormField"]],
@@ -30249,6 +30186,90 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_froala_editor__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_froala_editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_froala_editor__);
+
+
+// Add the custom speak button
+(function (FroalaEditor) {
+
+    if (!Nova.config.voiceSynthesizeUri) return;
+
+    var audioLoading = false;
+    var audioPlaying = false;
+    var audio = null;
+
+    FroalaEditor.DefineIcon('speakIcon', { NAME: 'Listen', template: 'text' });
+    FroalaEditor.RegisterCommand('speak', {
+        title: 'Listen To Selected',
+        icon: 'speakIcon',
+        focus: true,
+        showOnMobile: true,
+        refreshAfterCallback: true,
+
+        callback: function callback() {
+            var voiceSynthesizeUri = Nova.config.voiceSynthesizeUri;
+            var $btn = this.$tb.find('[data-cmd="speak"]');
+            var $btnText = $btn.find('span').first();
+
+            if (audioLoading) return;
+
+            if (audioPlaying) {
+                // If there is audio playing, just stop playing it
+                audio.pause();
+                $btnText.text('Listen');
+
+                audioPlaying = false;
+                audioLoading = false;
+                return;
+            }
+
+            // Make a selection
+            if (this.selection.text().trim() == '') {
+                this.commands.selectAll();
+            }
+
+            $btnText.text('Loading...');
+            $btn.addClass('fr-disabled');
+            audio = new Audio(voiceSynthesizeUri + '?text=' + encodeURIComponent(this.selection.text().trim()));
+            audioLoading = true;
+            audio.play();
+
+            audio.addEventListener('playing', function () {
+                audioPlaying = true;
+                audioLoading = false;
+                $btn.removeClass('fr-disabled');
+                $btnText.text('Stop');
+            }.bind(this));
+
+            audio.addEventListener('ended', function () {
+                audioPlaying = false;
+                $btn.removeClass('fr-disabled');
+                $btnText.text('Listen');
+            }.bind(this));
+        },
+
+        refresh: function refresh() {}
+    });
+})(__WEBPACK_IMPORTED_MODULE_0_froala_editor___default.a);
 
 /***/ })
 /******/ ]);
