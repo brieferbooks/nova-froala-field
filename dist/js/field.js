@@ -363,7 +363,7 @@ module.exports = function (exec) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(48);
 
 
 /***/ }),
@@ -1368,7 +1368,7 @@ var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(37)
 /* template */
-var __vue_template__ = __webpack_require__(46)
+var __vue_template__ = __webpack_require__(47)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1416,7 +1416,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_nova___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_nova__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MediaConfigurator__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PluginsLoader__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__plugins_speak__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__plugins_speak__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__plugins_word_count__ = __webpack_require__(61);
 //
 //
 //
@@ -1439,6 +1440,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // This is a custom plugin
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -29224,7 +29226,7 @@ var PluginsLoader = function () {
 
                                 _context.prev = 4;
                                 _context.next = 7;
-                                return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, 48));
+                                return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, 49));
 
                             case 7:
                                 _context.next = 12;
@@ -29244,7 +29246,7 @@ var PluginsLoader = function () {
 
                                 _context.prev = 13;
                                 _context.next = 16;
-                                return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 49));
+                                return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 50));
 
                             case 16:
                                 _context.next = 21;
@@ -29264,7 +29266,7 @@ var PluginsLoader = function () {
 
                                 _context.prev = 22;
                                 _context.next = 25;
-                                return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, 50));
+                                return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, 51));
 
                             case 25:
                                 _context.next = 30;
@@ -30122,6 +30124,79 @@ if (hadRuntime) {
 
 /***/ }),
 /* 46 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_froala_editor__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_froala_editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_froala_editor__);
+
+
+// Add the custom speak button
+(function (FroalaEditor) {
+
+    if (!Nova.config.voiceSynthesizeUri) return;
+
+    var audioLoading = false;
+    var audioPlaying = false;
+    var audio = null;
+
+    FroalaEditor.RegisterShortcut(74, 'speak', '', 'J', false);
+    FroalaEditor.DefineIcon('speakIcon', { NAME: 'Listen', template: 'text' });
+    FroalaEditor.RegisterCommand('speak', {
+        title: 'Listen To Selected',
+        icon: 'speakIcon',
+        focus: true,
+        showOnMobile: true,
+        refreshAfterCallback: true,
+
+        callback: function callback() {
+            var voiceSynthesizeUri = Nova.config.voiceSynthesizeUri;
+            var $btn = this.$tb.find('[data-cmd="speak"]');
+            var $btnText = $btn.find('span').first();
+
+            if (audioLoading) return;
+
+            if (audioPlaying) {
+                // If there is audio playing, just stop playing it
+                audio.pause();
+                $btnText.text('Listen');
+
+                audioPlaying = false;
+                audioLoading = false;
+                return;
+            }
+
+            // Make a selection
+            if (this.selection.text().trim() == '') {
+                this.commands.selectAll();
+            }
+
+            $btnText.text('Loading...');
+            $btn.addClass('fr-disabled');
+            audio = new Audio(voiceSynthesizeUri + '?text=' + encodeURIComponent(this.selection.text().trim()));
+            audioLoading = true;
+            audio.play();
+
+            audio.addEventListener('playing', function () {
+                audioPlaying = true;
+                audioLoading = false;
+                $btn.removeClass('fr-disabled');
+                $btnText.text('Stop');
+            }.bind(this));
+
+            audio.addEventListener('ended', function () {
+                audioPlaying = false;
+                $btn.removeClass('fr-disabled');
+                $btnText.text('Listen');
+            }.bind(this));
+        },
+
+        refresh: function refresh() {}
+    });
+})(__WEBPACK_IMPORTED_MODULE_0_froala_editor___default.a);
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -30182,13 +30257,12 @@ if (false) {
 }
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */,
@@ -30200,7 +30274,8 @@ if (false) {
 /* 57 */,
 /* 58 */,
 /* 59 */,
-/* 60 */
+/* 60 */,
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30208,67 +30283,60 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_froala_editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_froala_editor__);
 
 
-// Add the custom speak button
 (function (FroalaEditor) {
 
-    if (!Nova.config.voiceSynthesizeUri) return;
-
-    var audioLoading = false;
-    var audioPlaying = false;
-    var audio = null;
-
-    FroalaEditor.DefineIcon('speakIcon', { NAME: 'Listen', template: 'text' });
-    FroalaEditor.RegisterCommand('speak', {
-        title: 'Listen To Selected',
-        icon: 'speakIcon',
-        focus: true,
-        showOnMobile: true,
-        refreshAfterCallback: true,
-
-        callback: function callback() {
-            var voiceSynthesizeUri = Nova.config.voiceSynthesizeUri;
-            var $btn = this.$tb.find('[data-cmd="speak"]');
-            var $btnText = $btn.find('span').first();
-
-            if (audioLoading) return;
-
-            if (audioPlaying) {
-                // If there is audio playing, just stop playing it
-                audio.pause();
-                $btnText.text('Listen');
-
-                audioPlaying = false;
-                audioLoading = false;
-                return;
-            }
-
-            // Make a selection
-            if (this.selection.text().trim() == '') {
-                this.commands.selectAll();
-            }
-
-            $btnText.text('Loading...');
-            $btn.addClass('fr-disabled');
-            audio = new Audio(voiceSynthesizeUri + '?text=' + encodeURIComponent(this.selection.text().trim()));
-            audioLoading = true;
-            audio.play();
-
-            audio.addEventListener('playing', function () {
-                audioPlaying = true;
-                audioLoading = false;
-                $btn.removeClass('fr-disabled');
-                $btnText.text('Stop');
-            }.bind(this));
-
-            audio.addEventListener('ended', function () {
-                audioPlaying = false;
-                $btn.removeClass('fr-disabled');
-                $btnText.text('Listen');
-            }.bind(this));
-        },
-
-        refresh: function refresh() {}
+    // Add an option for your plugin.
+    FroalaEditor.DEFAULTS = Object.assign(FroalaEditor.DEFAULTS, {
+        wordCounter: true
     });
+
+    FroalaEditor.PLUGINS.charCounter = function (editor) {
+        var counter = void 0;
+
+        function countWords() {
+            var text = editor.el.innerText || "";
+            text = text.replace(/\s+/gi, " ");
+            text = text.trim();
+            return text.length ? text.split(' ').length : 0;
+        }
+
+        function updateCounter() {
+            if (editor.opts.wordCounter) {
+                var text = countWords() + " " + (editor.opts.wordCounterLabel || "words");
+                counter.text(text);
+                editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));
+                var t = editor.$wp.get(0).offsetWidth - editor.$wp.get(0).clientWidth;
+                0 <= t && ("rtl" == editor.opts.direction ? counter.css("margin-left", t) : counter.css("margin-right", t));
+            }
+        }
+
+        function _init() {
+            if (!!editor.opts.wordCounter && !!editor.$wp) {
+                counter = editor.$('<span class="fr-counter"></span>').css({
+                    'bottom': 1,
+                    'margin-right': 2
+                });
+
+                editor.$second_tb.append(counter);
+                editor.events.on("paste.afterCleanup", updateCounter);
+                editor.events.on("keyup contentChanged input", function () {
+                    editor.events.trigger("charCounter.update");
+                });
+                editor.events.on("charCounter.update", updateCounter);
+                editor.events.trigger("charCounter.update");
+                void editor.events.on("destroy", function () {
+                    editor.$(editor.o_win).off("resize.char" + editor.id);
+                    counter.removeData().remove();
+                    counter = null;
+                });
+            }
+        }
+
+        return {
+            _init: _init,
+            count: countWords
+        };
+    };
 })(__WEBPACK_IMPORTED_MODULE_0_froala_editor___default.a);
 
 /***/ })

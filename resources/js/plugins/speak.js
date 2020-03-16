@@ -9,6 +9,7 @@ import FroalaEditor from 'froala-editor';
     let audioPlaying = false;
     let audio = null;
 
+    FroalaEditor.RegisterShortcut(74, 'speak', '', 'J', false);
     FroalaEditor.DefineIcon('speakIcon', {NAME: 'Listen', template: 'text'})
     FroalaEditor.RegisterCommand('speak', {
         title: 'Listen To Selected',

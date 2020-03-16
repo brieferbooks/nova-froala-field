@@ -21,6 +21,7 @@ import PluginsLoader from '../PluginsLoader';
 
 // This is a custom plugin
 import '../plugins/speak';
+import '../plugins/word-count';
 
 export default {
     mixins: [HandlesValidationErrors, FormField],
