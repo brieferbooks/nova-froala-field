@@ -17,16 +17,28 @@ import FroalaEditor from 'froala-editor';
             return text.length ? text.split(' ').length : 0;
         }
 
+        function timeFormat(time) {
+            // Hours, minutes and seconds
+            let hrs = ~~(time / 3600);
+            let mins = ~~((time % 3600) / 60);
+            let secs = ~~time % 60;
+
+            // Output like "1:01" or "4:03:59" or "123:03:59"
+            let ret = "";
+
+            if (hrs > 0) {
+                ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+            }
+
+            ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+            ret += "" + secs;
+            return ret;
+        }
+
         function updateCounter() {
             if (editor.opts.wordCounter) {
                 let count = countWords();
-
-                // Calculate the time
-                let seconds = Math.round(count/2.957);
-                let minutes = Math.floor(seconds/60);
-                seconds -= minutes*60;
-
-                let text = count + " words - " + minutes + ':' + seconds + " speak time";
+                let text = count + " words - " + timeFormat(count/2.957) + " speak time";
 
                 counter.text(text);
                 editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));
