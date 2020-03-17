@@ -30321,7 +30321,7 @@ if (false) {
         function updateCounter() {
             if (editor.opts.wordCounter) {
                 var count = countWords();
-                var text = count + " words - " + timeFormat(count / 2.957) + " speak time";
+                var text = count + " words ~" + timeFormat(count / 2.957) + " speak time";
 
                 counter.text(text);
                 editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));

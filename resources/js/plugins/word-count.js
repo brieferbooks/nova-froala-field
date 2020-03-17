@@ -38,7 +38,7 @@ import FroalaEditor from 'froala-editor';
         function updateCounter() {
             if (editor.opts.wordCounter) {
                 let count = countWords();
-                let text = count + " words - " + timeFormat(count/2.957) + " speak time";
+                let text = count + " words ~" + timeFormat(count/2.957) + " speak time";
 
                 counter.text(text);
                 editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));
