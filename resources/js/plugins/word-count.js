@@ -11,7 +11,7 @@ import FroalaEditor from 'froala-editor';
         let counter;
 
         function countWords() {
-            var text = editor.el.innerText || "";
+            let text = editor.el.innerText || "";
             text = text.replace(/\s+/gi, " ");
             text = text.trim();
             return text.length ? text.split(' ').length : 0;
@@ -19,10 +19,18 @@ import FroalaEditor from 'froala-editor';
 
         function updateCounter() {
             if (editor.opts.wordCounter) {
-                var text = countWords() + " " + (editor.opts.wordCounterLabel || "words");
+                let count = countWords();
+
+                // Calculate the time
+                let seconds = Math.round(count/2.957);
+                let minutes = Math.floor(seconds/60);
+                seconds -= minutes*60;
+
+                let text = count + " words - " + minutes + ':' + seconds + " speak time";
+
                 counter.text(text);
                 editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));
-                var t = editor.$wp.get(0).offsetWidth - editor.$wp.get(0).clientWidth;
+                let t = editor.$wp.get(0).offsetWidth - editor.$wp.get(0).clientWidth;
                 0 <= t && ("rtl" == editor.opts.direction ? counter.css("margin-left", t) : counter.css("margin-right", t))
             }
         }

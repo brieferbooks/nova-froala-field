@@ -30302,7 +30302,15 @@ if (false) {
 
         function updateCounter() {
             if (editor.opts.wordCounter) {
-                var text = countWords() + " " + (editor.opts.wordCounterLabel || "words");
+                var count = countWords();
+
+                // Calculate the time
+                var seconds = Math.round(count / 2.957);
+                var minutes = Math.floor(seconds / 60);
+                seconds -= minutes * 60;
+
+                var text = count + " words - " + minutes + ':' + seconds + " speak time";
+
                 counter.text(text);
                 editor.opts.toolbarBottom && counter.css("margin-bottom", editor.$tb.outerHeight(!0));
                 var t = editor.$wp.get(0).offsetWidth - editor.$wp.get(0).clientWidth;
