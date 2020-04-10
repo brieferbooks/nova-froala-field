@@ -58,6 +58,17 @@ import FroalaEditor from 'froala-editor';
                 $btn.removeClass('fr-disabled');
                 $btnText.text('Listen');
             }.bind(this));
+
+            audio.addEventListener('error', function(){
+                audioPlaying = false;
+                audioLoading = false;
+                $btn.removeClass('fr-disabled');
+                $btnText.text('Listen');
+
+                if( ! _.isUndefined(Nova) ) {
+                    Nova.app.$toasted.show('Matthew is a little tired. Please try again shortly.', { type: 'error' });
+                }
+            });
         },
 
         refresh: function () {
