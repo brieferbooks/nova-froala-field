@@ -1,5 +1,5 @@
 {
-    "name": "froala/nova-froala-field",
+    "name": "briefer/nova-froala-field",
     "description": "A Laravel Nova Froala WYSIWYG Editor Field.",
     "keywords": [
         "laravel",

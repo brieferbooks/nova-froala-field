@@ -4895,12 +4895,15 @@ exports.default = {
     fieldAttribute: function fieldAttribute() {
       return this.field.attribute;
     },
+    validationKey: function validationKey() {
+      return this.field.validationKey;
+    },
     hasError: function hasError() {
-      return this.errors.has(this.fieldAttribute);
+      return this.errors.has(this.validationKey);
     },
     firstError: function firstError() {
       if (this.hasError) {
-        return this.errors.first(this.fieldAttribute);
+        return this.errors.first(this.validationKey);
       }
     }
   }
